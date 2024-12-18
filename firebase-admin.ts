@@ -1,8 +1,9 @@
 import { initializeApp, getApps, getApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const serviceKey = require("@/service_key.json");
+// const serviceKey = require("@/service_key.json");
+
+const serviceKey = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY || "{}");
 
 let app;
 
