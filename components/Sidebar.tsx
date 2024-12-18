@@ -45,7 +45,10 @@ const Sidebar = () => {
   );
 
   useEffect(() => {
-    if (!data) return;
+    if (!user || !data) {
+      setGroupedData({ owner: [], editor: [] });
+      return;
+    }
 
     const grouped = data.docs.reduce<{
       owner: RoomDocument[];
@@ -66,7 +69,7 @@ const Sidebar = () => {
     );
 
     setGroupedData(grouped);
-  }, [data]);
+  }, [user, data]);
 
   const menuOptions = (
     <>
