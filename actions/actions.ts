@@ -2,15 +2,12 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { adminDb } from "@/firebase-admin";
-import { redirect } from "next/navigation";
 import liveblocks from "@/lib/liveblocks";
 
 export async function createNewDocument() {
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
-  if (!userId) {
-    redirect("/sign-in"); // Clerk's default sign-in route
-  }
+  if (!userId) return redirectToSignIn();
 
   const { sessionClaims } = await auth();
   const docCollectionRef = adminDb.collection("documents");
@@ -36,12 +33,9 @@ export async function createNewDocument() {
 }
 
 export async function deleteDocument(roomId: string) {
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
-  console.log("deleteDocument", roomId);
+  if (!userId) return redirectToSignIn();
 
   try {
     // Delete the document reference itself
@@ -71,11 +65,9 @@ export async function deleteDocument(roomId: string) {
 }
 
 export async function inviteUserToDocument(roomId: string, email: string) {
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+  if (!userId) return redirectToSignIn();
   console.log("inviteUserToDocument", roomId, email);
 
   try {
@@ -99,11 +91,9 @@ export async function inviteUserToDocument(roomId: string, email: string) {
 }
 
 export async function removeUserFromDocument(roomId: string, email: string) {
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+  if (!userId) return redirectToSignIn();
   console.log("removeUserFromDocument", roomId, email);
 
   try {
